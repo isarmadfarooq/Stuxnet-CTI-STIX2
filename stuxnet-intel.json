@@ -1,0 +1,639 @@
+{
+  "type": "bundle",
+  "id": "bundle--c29ce885-9279-4fbc-b205-a8e8190ead53",
+  "objects": [
+    {
+      "type": "threat-actor",
+      "spec_version": "2.1",
+      "id": "threat-actor--5fb0c13a-7216-40bb-b1b2-e40e40d58699",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Equation Group (NSA/TAO + Israeli Unit 8200)",
+      "description": "Nation-state threat actor believed to be the NSA's Tailored Access Operations unit, working in collaboration with Israeli Unit 8200. Responsible for Operation Olympic Games and the development of Stuxnet. Part of the GOSSIP GIRL collaboration including Flame, Duqu, and Flowershop. Kaspersky Lab attributed Stuxnet to this group based on shared zero-day exploits with Fanny worm (2008).",
+      "threat_actor_types": [
+        "nation-state"
+      ],
+      "aliases": [
+        "GOSSIP GIRL",
+        "Operation Olympic Games",
+        "NSA TAO"
+      ],
+      "sophistication": "strategic",
+      "resource_level": "government",
+      "primary_motivation": "ideology",
+      "goals": [
+        "Sabotage Iran's uranium enrichment program at Natanz facility",
+        "Delay Iranian nuclear weapons capability by approximately 2 years"
+      ],
+      "labels": [
+        "nation-state",
+        "apt",
+        "government-sponsored"
+      ]
+    },
+    {
+      "type": "malware",
+      "spec_version": "2.1",
+      "id": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Stuxnet (W32.Stuxnet)",
+      "description": "Stuxnet was the first publicly reported malware to specifically target industrial control system (ICS) devices. It is a large and complex piece of malware utilizing multiple zero-day vulnerabilities, a sophisticated Windows rootkit, network infection routines, and a PLC rootkit. First seen June 17, 2010, discovered by VirusBlokAda/Sergey Ulasen in Belarus. Approximately 100,000+ computers infected worldwide. MITRE ATT&CK ID: S0603.",
+      "malware_types": [
+        "worm",
+        "rootkit",
+        "trojan"
+      ],
+      "is_family": false,
+      "aliases": [
+        "W32.Stuxnet",
+        "Stuxnet"
+      ],
+      "first_seen": "2010-06-17T00:00:00.000Z",
+      "architecture_execution_envs": [
+        "x86"
+      ],
+      "capabilities": [
+        "hides-artifacts",
+        "hides-executing-code",
+        "infects-remote-machines",
+        "persists-after-system-reboot",
+        "violates-system-operational-integrity",
+        "escalates-privileges",
+        "evades-av"
+      ],
+      "labels": [
+        "ics-malware",
+        "worm",
+        "cyberweapon"
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--5ac68636-5167-4174-b98a-353d84d2dc2f",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Replication Through Removable Media (T1091)",
+      "description": "Stuxnet spread via infected USB drives using malicious .LNK shortcut files. When a USB drive was inserted, Windows Explorer automatically rendered the shortcut icon, triggering code execution without any user click. This allowed Stuxnet to cross the air gap into the Natanz enrichment facility. Files dropped: ~WTR4132.tmp (main dropper DLL) and ~WTR4141.tmp (user-mode rootkit to hide USB files).",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "lateral-movement"
+        },
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "initial-access"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1091"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--fb71da68-68cf-423d-afa0-4b9ca543ba47",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Rootkit (T1014)",
+      "description": "Stuxnet deployed both a Windows kernel-level rootkit (mrxcls.sys, mrxnet.sys) and a PLC rootkit (OB1/OB35 injection). The kernel rootkit injected code into svchost.exe, services.exe, and lsass.exe. The PLC rootkit intercepted OB35 watchdog blocks to hide centrifuge speed changes from SCADA operators, displaying falsely normal readings while centrifuges were being destroyed.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "defense-evasion"
+        },
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "persistence"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1014"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--2dec781a-ea7a-4c08-bbfe-1de77e5945ad",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Subvert Trust Controls - Code Signing (T1553)",
+      "description": "Stuxnet drivers (mrxcls.sys, mrxnet.sys) were signed with stolen digital certificates from Realtek Semiconductor Corp and JMicron Technology Corp - both headquartered in Hsinchu Science Park, Taiwan. This bypassed Windows Vista/7 driver signing requirements. VeriSign revoked both certificates upon discovery.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "defense-evasion"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1553"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--aa84692d-ab9a-4402-a132-34b6d4bd85d1",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Supply Chain Compromise - Siemens STEP 7 Projects (T1195)",
+      "description": "Stuxnet infected Siemens STEP 7 project files, spreading to any engineer who opened an infected project. It also exploited the Siemens WinCC hardcoded database password (CVE-2010-2772) to directly access PLC programming data and insert malicious OB1 code blocks that altered centrifuge rotor frequencies between 2 Hz and 1,410 Hz.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "initial-access"
+        }
+      ],
+      "external_references": [
+        {
+          "source_name": "mitre-attack",
+          "external_id": "T1195"
+        }
+      ]
+    },
+    {
+      "type": "attack-pattern",
+      "spec_version": "2.1",
+      "id": "attack-pattern--a50df7af-998a-4445-b3ac-eac3f30ade33",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Network Propagation via Print Spooler RPC",
+      "description": "Stuxnet spread across local networks using the Windows Print Spooler vulnerability (CVE-2010-2729). It sent a crafted RPC print request to copy itself to remote systems without requiring any authentication or user interaction. Also used MS08-067 to spread via network shares as DEFRAG[random].tmp.",
+      "kill_chain_phases": [
+        {
+          "kill_chain_name": "mitre-attack",
+          "phase_name": "lateral-movement"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "spec_version": "2.1",
+      "id": "vulnerability--adde47b5-a060-4a63-9d32-ca8045942ca5",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "CVE-2010-2568 - Windows Shell LNK Shortcut Vulnerability",
+      "description": "Windows Explorer automatically displays icons for .LNK shortcut files without user interaction. Stuxnet placed a malicious .LNK file on a USB drive; the moment Windows tried to render the icon, code executed automatically. CVSS v2: 9.3 CRITICAL. CWE-20 (Improper Input Validation). Patched by MS10-046 (KB2286198) on August 2, 2010. Primary air-gap crossing vector for Natanz.",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2010-2568"
+        },
+        {
+          "source_name": "nist-nvd",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2010-2568"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "spec_version": "2.1",
+      "id": "vulnerability--5f42bd50-b424-45da-927b-37b6e8e35dab",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "CVE-2010-2772 - Siemens WinCC Hard-Coded Database Password",
+      "description": "Siemens WinCC and PCS 7 SCADA systems used a hardcoded password for the back-end SQL database, allowing local users to gain elevated privileges. CVSS v2: 7.2 HIGH. CWE-255 (Hard-coded Credentials). Stuxnet used this to log directly into the Siemens SQL database and access PLC programming data. Affects SIMATIC WinCC < V7.0 SP2 Update 1.",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2010-2772"
+        },
+        {
+          "source_name": "nist-nvd",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2010-2772"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "spec_version": "2.1",
+      "id": "vulnerability--33f8d71d-3bba-4ba0-90c5-e52b305db1fe",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "CVE-2010-2729 - Windows Print Spooler Remote Code Execution",
+      "description": "The Print Spooler service did not properly validate spooler access permissions, allowing remote attackers to create files in a system directory and execute arbitrary code by sending a crafted print request over RPC. CVSS v2: 9.3 CRITICAL. EPSS: 97.08%. CWE-20. Patched by MS10-061 on September 14, 2010. No login required - pure network lateral movement.",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2010-2729"
+        },
+        {
+          "source_name": "nist-nvd",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2010-2729"
+        }
+      ]
+    },
+    {
+      "type": "vulnerability",
+      "spec_version": "2.1",
+      "id": "vulnerability--ccb6e865-6b90-467b-98ab-a9fe93731382",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "CVE-2010-3338 - Windows Task Scheduler Privilege Escalation",
+      "description": "Windows Task Scheduler validated task files only with a CRC32 checksum. By crafting a CRC32 collision, an attacker could execute arbitrary commands with SYSTEM privileges. CVSS v2: 7.2 HIGH. CWE-20. Patched by MS10-092 (KB2305420) on December 14, 2010. Stuxnet used this to escalate from regular user to SYSTEM-level control.",
+      "external_references": [
+        {
+          "source_name": "cve",
+          "external_id": "CVE-2010-3338"
+        },
+        {
+          "source_name": "nist-nvd",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2010-3338"
+        }
+      ]
+    },
+    {
+      "type": "identity",
+      "spec_version": "2.1",
+      "id": "identity--a9f5ff16-9486-421c-93d8-1440a74ed88d",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Natanz Uranium Enrichment Facility - AEOI (Iran)",
+      "description": "Primary target of Stuxnet. The Natanz facility operated by Iran's Atomic Energy Organization of Iran (AEOI) housed Siemens S7-315 and S7-417 PLCs controlling IR-1 centrifuge arrays for uranium hexafluoride enrichment. Approximately 1,000 centrifuges were physically destroyed. Iran's nuclear program was delayed by an estimated 2 years. 60% of all Stuxnet infections were in Iran.",
+      "identity_class": "organization",
+      "sectors": [
+        "government"
+      ],
+      "contact_information": "Natanz, Isfahan Province, Iran"
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--e7ba7e95-28b1-4909-9349-8220d31b0a68",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Malicious File: ~WTR4132.tmp",
+      "description": "Main dropper DLL dropped to USB drive root by Stuxnet. Loaded via LNK vulnerability. Indicator of initial Stuxnet compromise on removable media.",
+      "pattern": "[file:name = '~WTR4132.tmp']",
+      "pattern_type": "stix",
+      "valid_from": "2010-06-17T00:00:00.000Z",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "labels": [
+        "dropper",
+        "usb",
+        "ioc"
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--24477959-0ace-42cc-b316-1c1691135146",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Malicious File: ~WTR4141.tmp",
+      "description": "User-mode rootkit dropped to USB drive root by Stuxnet. Hides all Stuxnet files on flash memory to prevent detection.",
+      "pattern": "[file:name = '~WTR4141.tmp']",
+      "pattern_type": "stix",
+      "valid_from": "2010-06-17T00:00:00.000Z",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "labels": [
+        "rootkit",
+        "usb",
+        "ioc"
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--f7b8f715-363c-46e1-80f8-9fb439b9cf76",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Malicious Driver: mrxcls.sys",
+      "description": "Kernel-mode rootkit driver installed at C:\\Windows\\System32\\Drivers\\mrxcls.sys. Injects Stuxnet code into system processes (svchost.exe, services.exe, lsass.exe). Registered as Windows service MRXCLS via registry key HKLM\\SYSTEM\\CurrentControlSet\\Services\\MRxCls. Signed with stolen Realtek Semiconductor Corp certificate.",
+      "pattern": "[file:name = 'mrxcls.sys' AND file:parent_directory_ref.path = 'C:\\\\Windows\\\\System32\\\\Drivers']",
+      "pattern_type": "stix",
+      "valid_from": "2010-06-17T00:00:00.000Z",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "labels": [
+        "kernel-rootkit",
+        "driver",
+        "ioc"
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--15e55f75-af98-4afa-9053-0d5774633ea9",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Malicious Driver: mrxnet.sys",
+      "description": "NDIS filter driver installed at C:\\Windows\\System32\\Drivers\\mrxnet.sys. Hides Stuxnet malware files on disk. Registered as Windows service MRXNET via registry key HKLM\\SYSTEM\\CurrentControlSet\\Services\\MRxNet. Signed with stolen JMicron Technology Corp certificate.",
+      "pattern": "[file:name = 'mrxnet.sys' AND file:parent_directory_ref.path = 'C:\\\\Windows\\\\System32\\\\Drivers']",
+      "pattern_type": "stix",
+      "valid_from": "2010-06-17T00:00:00.000Z",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "labels": [
+        "ndis-filter",
+        "driver",
+        "ioc"
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--1bb7aace-20c4-41cd-814c-4bc038dc3611",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Malicious Encrypted Payload: oem7a.PNF",
+      "description": "Encrypted main DLL payload stored at C:\\Windows\\inf\\oem7a.PNF. Part of a set of four encrypted PNF files masquerading as Windows INF files: oem7a.PNF, mdmcpq3.PNF, mdmeric3.PNF, oem6c.PNF.",
+      "pattern": "[file:name = 'oem7a.PNF' AND file:parent_directory_ref.path = 'C:\\\\Windows\\\\inf']",
+      "pattern_type": "stix",
+      "valid_from": "2010-06-17T00:00:00.000Z",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "labels": [
+        "encrypted-payload",
+        "ioc"
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--d020253c-bbab-471a-bbdc-b19e5c4358c7",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Registry Key: MRxCls Service Entry",
+      "description": "Persistence registry key created by Stuxnet to start mrxcls.sys kernel injection driver at boot. Key: HKLM\\SYSTEM\\CurrentControlSet\\Services\\MRxCls",
+      "pattern": "[windows-registry-key:key = 'HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\MRxCls']",
+      "pattern_type": "stix",
+      "valid_from": "2010-06-17T00:00:00.000Z",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "labels": [
+        "persistence",
+        "registry",
+        "ioc"
+      ]
+    },
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--33e11b31-092e-42bd-8cb6-b108a4a1dc94",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Registry Key: MRxNet Service Entry",
+      "description": "Persistence registry key created by Stuxnet to start mrxnet.sys file-hiding NDIS driver at boot. Key: HKLM\\SYSTEM\\CurrentControlSet\\Services\\MRxNet",
+      "pattern": "[windows-registry-key:key = 'HKEY_LOCAL_MACHINE\\\\SYSTEM\\\\CurrentControlSet\\\\Services\\\\MRxNet']",
+      "pattern_type": "stix",
+      "valid_from": "2010-06-17T00:00:00.000Z",
+      "indicator_types": [
+        "malicious-activity"
+      ],
+      "labels": [
+        "persistence",
+        "registry",
+        "ioc"
+      ]
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--b75c35dd-ca3f-4631-bee5-c6544067c73d",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Apply MS10-046 - Patch CVE-2010-2568 LNK Vulnerability",
+      "description": "PRIORITY: CRITICAL. Apply Microsoft Security Bulletin MS10-046 (KB2286198) to patch the Windows Shell LNK shortcut vulnerability. This prevents Stuxnet's primary USB-based air-gap crossing vector. Patched August 2, 2010."
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--0ea8f278-1399-4295-8534-c83206661d19",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Apply MS10-061 - Patch CVE-2010-2729 Print Spooler RCE",
+      "description": "PRIORITY: CRITICAL. Apply Microsoft Security Bulletin MS10-061 to patch the Windows Print Spooler Remote Code Execution vulnerability. This prevents Stuxnet's network lateral movement via RPC. Patched September 14, 2010."
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--14f74531-2511-448e-9cc7-2ae9917e10e3",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Apply MS10-092 - Patch CVE-2010-3338 Task Scheduler LPE",
+      "description": "PRIORITY: HIGH. Apply Microsoft Security Bulletin MS10-092 (KB2305420) to patch the Windows Task Scheduler privilege escalation vulnerability. Prevents Stuxnet from escalating to SYSTEM-level privileges. Patched December 14, 2010."
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--37eae7fe-046d-4d34-936e-065c141b9cd0",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Run Siemens SysClean Tool + Apply SIMATIC Security Update",
+      "description": "PRIORITY: CRITICAL for ICS environments. Run the Siemens-provided SysClean tool on all WinCC/PCS7 systems to detect and remove Stuxnet. Then install the SIMATIC Security Update (per CISA ICSA-10-272-01). Upgrade SIMATIC WinCC to V7.0 SP2 Update 1 or later. Upgrade SIMATIC STEP 7 to V5.5 SP1 or later."
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--31486f57-98f7-4668-bb79-0054120344d1",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Disable AutoRun/AutoPlay and Restrict USB Access",
+      "description": "PRIORITY: CRITICAL. Disable Windows AutoRun and AutoPlay on all machines, especially in ICS/OT environments. Implement USB device whitelisting and restrict physical port access. This directly neutralizes Stuxnet's primary initial access vector (USB .LNK autorun). Required per CISA ICSA-10-272-01."
+    },
+    {
+      "type": "course-of-action",
+      "spec_version": "2.1",
+      "id": "course-of-action--8df714ed-a91e-48b8-8fa5-97c5d2aae7cd",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "name": "Implement IT/OT Network Segmentation (Purdue Model)",
+      "description": "PRIORITY: HIGH. Segment IT and OT/ICS networks using the Purdue Reference Model. Implement strict firewall rules to prevent lateral movement from corporate networks to industrial control systems. Air-gap critical PLC systems wherever operationally feasible. Monitor all inter-zone traffic."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--f87e5827-e6ab-4216-ae20-e57a84725982",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "uses",
+      "source_ref": "threat-actor--5fb0c13a-7216-40bb-b1b2-e40e40d58699",
+      "target_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "description": "Equation Group (NSA/TAO + Unit 8200) developed and deployed Stuxnet as part of Operation Olympic Games."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--7484c3a0-5f5f-445d-93df-79dbae84cff6",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "uses",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "attack-pattern--5ac68636-5167-4174-b98a-353d84d2dc2f",
+      "description": "Stuxnet used USB replication via malicious .LNK files as its primary propagation and air-gap crossing mechanism."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--c1b780d7-5fab-4575-96a0-6b4c0427ffb7",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "uses",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "attack-pattern--fb71da68-68cf-423d-afa0-4b9ca543ba47",
+      "description": "Stuxnet employed both a Windows kernel rootkit and a PLC rootkit to hide itself and its centrifuge sabotage."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--07ee987c-9652-45d7-bd96-cf56bff28df6",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "uses",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "attack-pattern--2dec781a-ea7a-4c08-bbfe-1de77e5945ad",
+      "description": "Stuxnet used stolen Realtek and JMicron code-signing certificates to bypass Windows driver signing enforcement."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--6102eac4-a500-4d4c-9824-a4e179e87b06",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "uses",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "attack-pattern--aa84692d-ab9a-4402-a132-34b6d4bd85d1",
+      "description": "Stuxnet infected Siemens STEP 7 project files and exploited hardcoded WinCC credentials to reach PLC systems."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--5fed49a2-f354-4bf1-aaaf-a10ac15e163d",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "uses",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "attack-pattern--a50df7af-998a-4445-b3ac-eac3f30ade33",
+      "description": "Stuxnet used Print Spooler RPC and network share exploits to spread laterally across infected networks."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--eb5d0682-a3e3-4e20-b278-70cffbbd04e3",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "exploits",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "vulnerability--adde47b5-a060-4a63-9d32-ca8045942ca5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--10d32027-83db-4dce-8707-e99381194bc6",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "exploits",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "vulnerability--5f42bd50-b424-45da-927b-37b6e8e35dab"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--11f1130f-4e09-4405-bad7-24609a8d6ace",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "exploits",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "vulnerability--33f8d71d-3bba-4ba0-90c5-e52b305db1fe"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--d4a26145-ac58-470d-845a-bcdec8a388d3",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "exploits",
+      "source_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6",
+      "target_ref": "vulnerability--ccb6e865-6b90-467b-98ab-a9fe93731382"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--1bed4844-4453-49a6-afc0-ef962c6847e7",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "targets",
+      "source_ref": "threat-actor--5fb0c13a-7216-40bb-b1b2-e40e40d58699",
+      "target_ref": "identity--a9f5ff16-9486-421c-93d8-1440a74ed88d",
+      "description": "Equation Group specifically targeted the Natanz uranium enrichment facility to sabotage Iran's nuclear program."
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--04e74789-b905-4e6a-ac80-f8f21bbc29a1",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--e7ba7e95-28b1-4909-9349-8220d31b0a68",
+      "target_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--f3645b97-9a40-4974-a30f-476b034c756e",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "indicates",
+      "source_ref": "indicator--f7b8f715-363c-46e1-80f8-9fb439b9cf76",
+      "target_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--8e4f4611-32f3-47e2-9700-496d5b1d7226",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "mitigates",
+      "source_ref": "course-of-action--b75c35dd-ca3f-4631-bee5-c6544067c73d",
+      "target_ref": "vulnerability--adde47b5-a060-4a63-9d32-ca8045942ca5"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--b0203425-b861-4cca-94d7-a6879eb54f01",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "mitigates",
+      "source_ref": "course-of-action--0ea8f278-1399-4295-8534-c83206661d19",
+      "target_ref": "vulnerability--33f8d71d-3bba-4ba0-90c5-e52b305db1fe"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--2942aabc-e2f6-48b3-8250-53b99f2dc35e",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "mitigates",
+      "source_ref": "course-of-action--14f74531-2511-448e-9cc7-2ae9917e10e3",
+      "target_ref": "vulnerability--ccb6e865-6b90-467b-98ab-a9fe93731382"
+    },
+    {
+      "type": "relationship",
+      "spec_version": "2.1",
+      "id": "relationship--43e67b7f-6386-4df9-a962-e90b228c648b",
+      "created": "2024-01-01T00:00:00.000Z",
+      "modified": "2024-01-01T00:00:00.000Z",
+      "relationship_type": "mitigates",
+      "source_ref": "course-of-action--31486f57-98f7-4668-bb79-0054120344d1",
+      "target_ref": "malware--7cb07834-eeea-44fc-ae82-3021c6baf4e6"
+    }
+  ]
+}
