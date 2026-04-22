@@ -1,1 +1,0 @@
-# Stuxnet-CTI-STIX2
